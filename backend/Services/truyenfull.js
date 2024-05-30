@@ -111,7 +111,7 @@ module.exports = class TruyenFull {
             let $ = cheerio.load(data);
             const title = $('.truyen-title').text();
             const chapterTitle = $('.chapter-title').text();
-            const content = "..."
+            const content = $('#chapter-c p').html();
             const curLink = $('.chapter-title').attr('href');
             
             let prevLink = $('#prev_chap').attr('href');
@@ -127,7 +127,17 @@ module.exports = class TruyenFull {
             let id = $('#truyen-id').val();
             let {numberOfChapters, chapters} = await this.GetChapterList(name, id);
 
-            return { title, chapterTitle, curLink, prevLink, nextLink, content, numberOfChapters, chapters};
+            return { 
+                title, 
+                chapterTitle, 
+                curLink, 
+                prevLink, 
+                nextLink, 
+                content, 
+                numberOfChapters, 
+                chapters
+            };
+
         } catch (error) {
             throw error;
         }
