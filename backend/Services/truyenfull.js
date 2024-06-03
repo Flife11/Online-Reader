@@ -101,7 +101,6 @@ module.exports = class TruyenFull {
     async GetChapter(name, chapter) {
         try {
             let response = await fetch(this.baseUrl + name + '/' + chapter);
-            
 
             let data = await response.text();
             if (!response.ok) {
@@ -110,7 +109,22 @@ module.exports = class TruyenFull {
             let $ = cheerio.load(data);
             const title = $('.truyen-title').text();
             const chapterTitle = $('.chapter-title').text();
-            const content = $('#chapter-c p').html();
+
+            //Get content
+            $('#chapter-c').find('div[class*="ads"]').remove()
+            let content = '';
+            let paragraphs = $('#chapter-c p');
+            if (paragraphs.length !== 0) {
+                let allHtmlContent = [];
+                paragraphs.each(function() {
+                    allHtmlContent.push($(this).html());
+                });
+                content = allHtmlContent.join('');
+            }
+            else {
+                content = $('#chapter-c').html()
+            }
+
             const curLink = $('.chapter-title').attr('href');
             
             let prevLink = $('#prev_chap').attr('href');
