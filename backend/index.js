@@ -4,9 +4,19 @@ const app = express();
 const port = 3000;
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+
+// Enable CORS
+app.use(
+  cors({
+      origin: "*",
+      credentials: true,
+  }),
+);
 
 // Require router
 const NovelRouter = require('./Routers/NovelRouter');
+const DomainsRouter = require('./Routers/DomainsRouter');
 
 // Define the relative path to the folder you want to monitor
 // const folderToMonitor = path.join(__dirname, 'Services/');
@@ -19,6 +29,7 @@ const NovelRouter = require('./Routers/NovelRouter');
 //     }
 // });
 
+app.use('/getdomains', DomainsRouter);
 app.use('/', NovelRouter);
 
 app.listen(port, () => {
