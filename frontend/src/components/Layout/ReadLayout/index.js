@@ -19,6 +19,7 @@ function ReadLayout({ children }) {
   const [domain, setDomain] = useState("");
   const [currentElement, setCurrentElement] = useState("");
   const { name, id } = useParams();
+  const [nameStory, setNameStory]=useState('')
   // reset when set chapterconfig is not json
   // const storedDataJson = localStorage.setItem(`${name}-${id}`,"");
 
@@ -64,6 +65,7 @@ function ReadLayout({ children }) {
       })
       .then((jsonData) => {
         // Lưu dữ liệu vào state
+        setNameStory(jsonData.data.title)
         const dataChapter= jsonData.data.chapters;
         setCurrentElement(dataChapter[parseInt(id)].title);
         const titles = dataChapter.map(chapter => chapter.title);
@@ -76,17 +78,17 @@ function ReadLayout({ children }) {
 
   //Get context
   useEffect(() => {
-    // if(!name || !currentElement ||!domain)
-    //   {
-    //     return;
-    //   }
+    if(!name || !currentElement ||!domain)
+      {
+        return;
+      }
     const currentChapter= currentElement.split(' ');
     if(!currentChapter[1])
       {
         return;
       }
-    const chapter= 'chuong-'+currentChapter[1].split('')[0];
-    
+    let chapter= 'chuong-'+currentChapter[1].split(':')[0];
+    chapter=chapter.trim();
     const url = `${backendURL}/${name}/${chapter}?domain=${domain}`;
     fetch(url)
       .then((response) => {
@@ -111,7 +113,6 @@ function ReadLayout({ children }) {
 
 
 
-  //
   useEffect(() => {
     let dataConfig = localStorage.getItem(`${name}-${id}`);
     if (dataConfig) {
@@ -155,7 +156,7 @@ function ReadLayout({ children }) {
   }, [domain,name,id]);
   return (
     <div className={cx("readlayout")}>
-      <Header listDomain={listDomain} />
+      <Header listDomain={listDomain} nameStory={nameStory} chapter={currentElement}/>
       <Nav
         currentElement={currentElement}
         position={true}
