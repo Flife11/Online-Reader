@@ -11,7 +11,6 @@ import Content from "./Content";
 const cx = classNames.bind(styles);
 const backendURL="http://localhost:3000";
 
-
 function ReadLayout({ children }) {
   const [listDomain, setListDomain] = useState([]);
   const [context, setContext] = useState("");
@@ -25,10 +24,6 @@ function ReadLayout({ children }) {
 
   // get domain
   useLayoutEffect(() => {
-    if(!domain)
-      {
-        return;
-      }
     const url = `${backendURL}/getdomains`;
     fetch(url)
       .then((response) => {
@@ -45,7 +40,7 @@ function ReadLayout({ children }) {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [domain]);
+  },[]);
 
 
   //Get chapters
@@ -55,7 +50,7 @@ function ReadLayout({ children }) {
         return;
       }
     const url = `${backendURL}/${name}?domain=${domain}`;
-
+    
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -65,11 +60,20 @@ function ReadLayout({ children }) {
       })
       .then((jsonData) => {
         // Lưu dữ liệu vào state
-        setNameStory(jsonData.data.title)
-        const dataChapter= jsonData.data.chapters;
-        setCurrentElement(dataChapter[parseInt(id)].title);
-        const titles = dataChapter.map(chapter => chapter.title);
-        setChapters(titles);
+        if(jsonData && jsonData.data && jsonData.data.title)
+          {
+            setNameStory(jsonData.data.title)
+          }
+          if(jsonData && jsonData.data && jsonData.data.chapters)
+            {
+                const dataChapter= jsonData.data.chapters;
+                if(dataChapter[parseInt(id)]&& dataChapter[parseInt(id)].title)
+                  {
+                    setCurrentElement(dataChapter[parseInt(id)].title);
+                  } 
+                  const titles = dataChapter.map(chapter => chapter.title);
+                  setChapters(titles);
+            }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -80,6 +84,7 @@ function ReadLayout({ children }) {
   useEffect(() => {
     if(!name || !currentElement ||!domain)
       {
+        setContext('No data');
         return;
       }
     const currentChapter= currentElement.split(' ');
@@ -90,6 +95,7 @@ function ReadLayout({ children }) {
     let chapter= 'chuong-'+currentChapter[1].split(':')[0];
     chapter=chapter.trim();
     const url = `${backendURL}/${name}/${chapter}?domain=${domain}`;
+    console.log(url);
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -176,6 +182,7 @@ function ReadLayout({ children }) {
         listElements={chapters}
         name={name}
         id={id}
+        context={context}
       />
     </div>
   );
