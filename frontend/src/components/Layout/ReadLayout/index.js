@@ -11,6 +11,7 @@ import Content from "./Content";
 const cx = classNames.bind(styles);
 const backendURL="http://localhost:3000";
 
+
 function ReadLayout({ children }) {
   const [listDomain, setListDomain] = useState([]);
   const [context, setContext] = useState("");
@@ -51,6 +52,7 @@ function ReadLayout({ children }) {
       }
     const url = `${backendURL}/${name}?domain=${domain}`;
     
+
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -74,6 +76,7 @@ function ReadLayout({ children }) {
                   const titles = dataChapter.map(chapter => chapter.title);
                   setChapters(titles);
             }
+
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -87,6 +90,7 @@ function ReadLayout({ children }) {
         setContext('No data');
         return;
       }
+
     const currentChapter= currentElement.split(' ');
     if(!currentChapter[1])
       {
@@ -96,6 +100,7 @@ function ReadLayout({ children }) {
     chapter=chapter.trim();
     const url = `${backendURL}/${name}/${chapter}?domain=${domain}`;
     console.log(url);
+
     fetch(url)
       .then((response) => {
         if (!response.ok) {
