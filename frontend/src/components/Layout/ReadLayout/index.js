@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { useState, useEffect, useLayoutEffect } from "react";
-import { json, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import styles from "./ReadLayout.module.scss";
 import Header from "./Header";
