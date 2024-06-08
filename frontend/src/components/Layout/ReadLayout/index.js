@@ -21,7 +21,7 @@ function ReadLayout({ children }) {
   const { name, id } = useParams();
   const [nameStory, setNameStory]=useState('')
   // reset when set chapterconfig is not json
-  // const storedDataJson = localStorage.setItem(`${name}-${id}`,"");
+  // const storedDataJson = localStorage.setItem(`${name}`,"");
 
   // get domain
   useLayoutEffect(() => {
@@ -50,7 +50,7 @@ function ReadLayout({ children }) {
       {
         return;
       }
-    const url = `${backendURL}/${name}?domain=${domain}`;
+    const url = `${backendURL}/${domain}/${name}`;
     
 
     fetch(url)
@@ -98,7 +98,7 @@ function ReadLayout({ children }) {
       }
     let chapter= 'chuong-'+currentChapter[1].split(':')[0];
     chapter=chapter.trim();
-    const url = `${backendURL}/${name}/${chapter}?domain=${domain}`;
+    const url = `${backendURL}/${domain}/${name}/${chapter}`;
     console.log(url);
 
     fetch(url)
@@ -125,7 +125,7 @@ function ReadLayout({ children }) {
 
 
   useEffect(() => {
-    let dataConfig = localStorage.getItem(`${name}-${id}`);
+    let dataConfig = localStorage.getItem(`${name}`);
     if (dataConfig) {
       dataConfig = JSON.parse(dataConfig);
       if (dataConfig.domain) {
@@ -149,20 +149,20 @@ function ReadLayout({ children }) {
         line: 1.5,
         background: "white",
       };
-      localStorage.setItem(`${name}-${id}`, JSON.stringify(data));
+      localStorage.setItem(`${name}`, JSON.stringify(data));
     }
   }, [listDomain,name,id]);
 
   // insert data into local storage when domain changed
   useEffect(() => {
-    const storageDataJson = localStorage.getItem(`${name}-${id}`);
+    const storageDataJson = localStorage.getItem(`${name}`);
     if (storageDataJson) {
       const storageData = JSON.parse(storageDataJson);
       const data = {
         ...storageData,
         domain,
       };
-      localStorage.setItem(`${name}-${id}`, JSON.stringify(data));
+      localStorage.setItem(`${name}`, JSON.stringify(data));
     }
   }, [domain,name,id]);
   return (
