@@ -51,8 +51,6 @@ function ReadLayout({ children }) {
         return;
       }
     const url = `${backendURL}/${domain}/${name}`;
-    
-
     fetch(url)
       .then((response) => {
         if (!response.ok) {

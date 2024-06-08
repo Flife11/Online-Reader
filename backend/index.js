@@ -13,13 +13,11 @@ app.use(
   }),
 );
 
-// Require router
-const NovelRouter = require('./Routers/NovelRouter');
-const DomainsRouter = require('./Routers/DomainsRouter');
+
 
 // Get list domain in Services folder
 global.ListDomain = []
-let files = fs.readdirSync('./Services');
+let files = fs.readdirSync(path.resolve(__dirname,'./Services'));
 files.forEach(file => {
     let domain = file.split('.')[0];    
     global.ListDomain[domain] = `./Services/${domain}`;
@@ -36,8 +34,14 @@ fs.watch(folderToMonitor, (eventType, filename) => {
     }
 });
 
+// Require router
+const NovelRouter = require('./Routers/NovelRouter');
+const DomainsRouter = require('./Routers/DomainsRouter');
+
 app.use('/getdomains', DomainsRouter);
 app.use('/', NovelRouter);
+
+// Start server
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
