@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { useState, useEffect, useLayoutEffect } from "react";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 
 import styles from "./ReadLayout.module.scss";
 import Header from "./Header";
@@ -114,11 +114,50 @@ function ReadLayout({ children }) {
           }
         // Lưu dữ liệu vào state
         setContext(jsonData.data.content);
+        const storageDataJson = localStorage.getItem(`history`);
+        if (storageDataJson)
+          {
+            let dataJson= JSON.parse(storageDataJson);
+
+            let dataStory= dataJson[name]
+            if (dataStory)
+              {
+                dataStory= {
+                  ...dataStory,
+                  domain:domain,
+                  id:id
+                }
+                dataJson[name]=dataStory
+
+                localStorage.setItem('history', JSON.stringify(dataJson));
+              }
+              else
+              {
+                dataStory= {
+                  domain:domain,
+                  id:id
+                }
+                dataJson[name]=dataStory
+                localStorage.setItem('history', JSON.stringify(dataJson));
+              }
+          }
+          else
+          {
+            let dataStory= {
+              domain:domain,
+              id:id
+            }
+            let dataJson={}
+            dataJson[name]=dataStory
+
+            localStorage.setItem('history', JSON.stringify(dataJson));
+          }
+
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [name,domain,currentElement]);
+  }, [name,domain,currentElement,id]);
 
 
 
