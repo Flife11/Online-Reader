@@ -75,7 +75,7 @@ function Content({ context, name, id, downloadTypeList, downloadUrl }) {
   return (
     <div className={cx("content")}>
       {/* TODO button download */}
-      <DownloadGroup downloadTypeList={downloadTypeList} downloadUrl={downloadUrl}></DownloadGroup>
+      <DownloadGroup downloadTypeList={downloadTypeList} downloadUrl={downloadUrl} name={name} id={id}></DownloadGroup>
       <span
         style={{
           fontSize: size + "px",
