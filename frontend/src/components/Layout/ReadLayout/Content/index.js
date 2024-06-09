@@ -57,6 +57,7 @@ function Content({ context, name, id, downloadTypeList, downloadUrl }) {
         setLine(storedDate.line);
         setBackground(storedDate.background);
       }
+
   }, [name,id]);
 
 
