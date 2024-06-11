@@ -69,6 +69,8 @@ function ReadLayout({ children }) {
   useEffect(() => {
     if (!name || !currentElement || !domain) {
       setContext("No data");
+      setSpiner(false)
+
       return;
     }
     const currentChapter = currentElement.split(" ");
@@ -84,6 +86,7 @@ function ReadLayout({ children }) {
     getDetailChapterNovel(domain, name, chapter).then((result) => {
       if (result?.success) {
         // console.log("story fetched", result.data)
+        console.log("Success");
         setContext(result?.data);
         setSpiner(false)
 
@@ -121,21 +124,9 @@ function ReadLayout({ children }) {
         }
       } else {
         setContext("No data");
+        console.log("Error");
         setSpiner(false)
 
-        // const storageDataJson = localStorage.getItem(`history`);
-        // if (storageDataJson) {
-        //   let dataJson = JSON.parse(storageDataJson);
-        //   let dataStory = dataJson[name];
-        //   if(dataStory)
-        //     {
-        //       const currentDomain= dataStory.domain;
-        //       if(currentDomain)
-        //         {
-        //           setDomain(currentDomain)
-        //         }
-        //     }
-        // }
 
       }
     });
@@ -189,6 +180,7 @@ function ReadLayout({ children }) {
         listDomain={listDomain}
         nameStory={nameStory}
         chapter={currentElement}
+        name={name}
       />
       <Nav
         currentElement={currentElement}
